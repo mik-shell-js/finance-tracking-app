@@ -24,7 +24,7 @@
 @layer utilities {
 
   .statsBar {
-    @apply text-sky-500
+    @apply text-sky-500 transition-all duration-100 hover:scale-110;
   }
 
   .btn {
