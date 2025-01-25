@@ -7,10 +7,10 @@ import { authContext } from "@/lib/store/auth-context";
 import { currencyFormatter } from "@/lib/utils";
 
 import ExpenseCategoryItem from "@/components/ExpenseCategoryItem";
-
 import AddIncomeModal from "@/components/modals/AddIncomeModal";
 import AddExpensesModal from "@/components/modals/AddExpensesModal";
 import SignIn from "@/components/SignIn";
+import TrackOrderComponent from "@/components/TrackOrderComponent"; // Import the new component
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
@@ -28,12 +28,8 @@ export default function Home() {
 
   useEffect(() => {
     const newBalance =
-      income.reduce((total, i) => {
-        return total + i.amount;
-      }, 0) -
-      expenses.reduce((total, e) => {
-        return total + e.total;
-      }, 0);
+      income.reduce((total, i) => total + i.amount, 0) -
+      expenses.reduce((total, e) => total + e.total, 0);
 
     setBalance(newBalance);
   }, [expenses, income]);
@@ -64,17 +60,13 @@ export default function Home() {
 
         <section className="flex items-center gap-2 py-3">
           <button
-            onClick={() => {
-              setShowAddExpenseModal(true);
-            }}
+            onClick={() => setShowAddExpenseModal(true)}
             className="btn btn-primary"
           >
             + Expenses
           </button>
           <button
-            onClick={() => {
-              setShowAddIncomeModal(true);
-            }}
+            onClick={() => setShowAddIncomeModal(true)}
             className="btn btn-primary-outline"
           >
             + Income
@@ -85,9 +77,9 @@ export default function Home() {
         <section className="py-6">
           <h3 className="text-2xl">My Expenses</h3>
           <div className="flex flex-col gap-4 mt-6">
-            {expenses.map((expense) => {
-              return <ExpenseCategoryItem key={expense.id} expense={expense} />;
-            })}
+            {expenses.map((expense) => (
+              <ExpenseCategoryItem key={expense.id} expense={expense} />
+            ))}
           </div>
         </section>
 
@@ -111,6 +103,12 @@ export default function Home() {
               }}
             />
           </div>
+        </section>
+
+        {/* Order Tracking Section */}
+        <section className="py-6">
+          <h3 className="text-2xl">Track Your Order</h3>
+          <TrackOrderComponent />
         </section>
       </main>
     </>
